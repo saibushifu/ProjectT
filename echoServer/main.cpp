@@ -1,9 +1,9 @@
 #include <QCoreApplication>
-#include "mytcpserver.h"
-
+#include "server.h"
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    MyTcpServer myserv;
+    //запуск сервера
+    Server s;
     return a.exec();
 }
