@@ -1,6 +1,9 @@
 #include "server.h"
 #include "sha256.h"
 #include <string>
+#include "serverfunctions.h"
+#include "DataContext.h"
+
 
 Server::Server()
 {
@@ -15,12 +18,7 @@ Server::Server()
     }
     nextBlockSize = 0;
 
-
-
-
-
-
-
+    DataContext::getInstance();
 }
 
 void Server::incomingConnection(qintptr socketDescripter)
@@ -85,6 +83,10 @@ void Server::slotReadyRead()
             //обнуляем размер блока, чтобы принимать новые сообщения
             nextBlockSize = 0;
             qDebug() << operationNumber;
+            auto sf = new serverFunctions;
+            auto result = sf->answerOnOperation(operationNumber, login);
+SendToClient(result);
+                    /*
             if(operationNumber == 1)
             {
                 auto p = new SHA256;
@@ -95,8 +97,10 @@ void Server::slotReadyRead()
             {
                 SendToClient("Проверить");
             }
+            break;*/
 
-            break;
+
+
         }
     }
     else
