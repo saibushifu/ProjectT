@@ -1,40 +1,32 @@
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <memory>
+#ifndef DataContext_H
+#define DataContext_H
 
-#ifndef DATACONTEXT_H
-#define DATACONTEXT_H
+#include <QDebug>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlRecord>
+
 
 class DataContext
 {
-private:
-    static std::unique_ptr<QSqlDatabase> db_instance;
 
-    DataContext() {}
-    DataContext(const DataContext&);
-    DataContext& operator=(DataContext&);
+private:
+
+    static DataContext * p_instance;
+    QSqlDatabase m_DataContext;
+
+protected:
+    DataContext(){}
+    DataContext(const DataContext& );
+    DataContext& operator = (DataContext&);
+    ~DataContext();
 
 public:
-    static QSqlDatabase& getInstance()
-    {
-        if (!db_instance)
-        {
-            db_instance = std::make_unique<QSqlDatabase>(QSqlDatabase::addDatabase("QSQLITE", "SQLITE"));
-            db_instance->setDatabaseName("./projectTDb.db");
-            db_instance->open();
-        }
-        return *db_instance;
-    }
-
-    static void closeInstance()
-    {
-        if (db_instance && db_instance->isOpen())
-        {
-            db_instance->close();
-        }
-    }
+    static DataContext* getInstance();
+    QStringList send_query(QString queryStr, bool is_selection);
+    bool connect();
+    void disconnect();
 };
 
-std::unique_ptr<QSqlDatabase> DataContext::db_instance = nullptr;
-
-#endif // DATACONTEXT_H
+#endif // DataContext_H

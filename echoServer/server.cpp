@@ -84,7 +84,7 @@ void Server::slotReadyRead()
             nextBlockSize = 0;
             qDebug() << operationNumber;
             auto sf = new serverFunctions;
-            auto result = sf->answerOnOperation(operationNumber, login);
+            auto result = sf->answerOnOperation(operationNumber, login, password);
 SendToClient(result);
                     /*
             if(operationNumber == 1)
