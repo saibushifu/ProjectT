@@ -13,13 +13,13 @@ MainWindow::MainWindow(QWidget *parent)
     socket = new QTcpSocket(this);
 
     db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE");
-    db.setDatabaseName("./projectTDb.db");
+    db.setDatabaseName("C:/11111qwerty/projectTDb.db");
 db.open();
     sqlQuery = new QSqlQuery(db);
-    sqlQuery->exec("CREATE TABLE user(id INT, login TEXT, password TEXT);");
+    sqlQuery->exec("SELECT * FROM User;");
 
     tableModel = new QSqlTableModel(this, db);
-    tableModel->setTable("user");
+    tableModel->setTable("User");
     tableModel->select();
 
     ui->tableView->setModel(tableModel);
@@ -128,6 +128,7 @@ void MainWindow::on_lineEdit_returnPressed()
 
 void MainWindow::on_pushButton_5_clicked()
 {
+
     SendToServer(ui->lineEdit_2->text(),ui->lineEdit_3->text(), 1);
 }
 
