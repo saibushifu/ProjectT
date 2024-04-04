@@ -42,7 +42,7 @@
     bool DataContext::connect()
     {
         m_DataContext = QSqlDatabase::addDatabase("QSQLITE");
-        m_DataContext.setDatabaseName("C:/11111qwerty/projectTDb.db");
+        m_DataContext.setDatabaseName("C:/Music/projectTDb.db");
         if (!m_DataContext.open())
         {
             qDebug() << "Ошибка соединения с базой данных";

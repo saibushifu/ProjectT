@@ -1,6 +1,8 @@
 #include "serverfunctions.h"
 #include "sha256.h"
 #include "databasefunctions.h"
+#include <qsqlquery.h>
+
 serverFunctions::serverFunctions()
 {
 
@@ -21,11 +23,18 @@ QString serverFunctions::answerOnOperation(quint32 operationType, QString text1,
     }
     else if(operationType == 3)
     {
-        return "Авторизация пользователя " + text1 + " не пройдена. Нет подключения к базе данных.";
+        auto sha = new SHA256;
+        QString hashPassword = QString::fromStdString(sha->hashString(text2.toStdString()));
+        auto result = dataBaseFunctions::FindUser(text1, hashPassword);
+        if (result) return "АВТОРИЗАЦИЯ ПРОЙДЕНА УСПЕШНО!";
+        return "Авторизация пользователя " + text1 + " не пройдена.";
     }
     else if(operationType == 4)
     {
-        return "Регистрация пользователя " + text1 + " не пройдена. Нет подключения к базе данных.";
+        auto sha = new SHA256;
+        QString hashPassword = QString::fromStdString(sha->hashString(text2.toStdString()));
+        dataBaseFunctions::AddUser(1, text1, hashPassword);
+        return "Пользователь " + text1 + " зарегистрирован.";
     }
     else if(operationType == 5)
     {
