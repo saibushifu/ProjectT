@@ -33,7 +33,6 @@ public:
     QWidget *verticalLayoutWidget_2;
     QVBoxLayout *verticalLayout_2;
     QPushButton *pushButton;
-    QTextBrowser *textBrowser;
     QLineEdit *lineEdit;
     QPushButton *pushButton_2;
     QPushButton *pushButton_3;
@@ -48,7 +47,11 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QPushButton *pushButton_5;
     QPushButton *pushButton_4;
+    QPushButton *pushButton_6;
+    QPushButton *pushButton_7;
+    QPushButton *pushButton_8;
     QTableView *tableView;
+    QTextBrowser *textBrowser;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -57,11 +60,12 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(875, 653);
+        MainWindow->setLayoutDirection(Qt::LeftToRight);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         verticalLayoutWidget_2 = new QWidget(centralwidget);
         verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
-        verticalLayoutWidget_2->setGeometry(QRect(10, 20, 160, 181));
+        verticalLayoutWidget_2->setGeometry(QRect(10, 20, 160, 186));
         verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget_2);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -69,11 +73,6 @@ public:
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
         verticalLayout_2->addWidget(pushButton);
-
-        textBrowser = new QTextBrowser(verticalLayoutWidget_2);
-        textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-
-        verticalLayout_2->addWidget(textBrowser);
 
         lineEdit = new QLineEdit(verticalLayoutWidget_2);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
@@ -92,7 +91,7 @@ public:
 
         verticalLayoutWidget_3 = new QWidget(centralwidget);
         verticalLayoutWidget_3->setObjectName(QString::fromUtf8("verticalLayoutWidget_3"));
-        verticalLayoutWidget_3->setGeometry(QRect(430, 340, 271, 161));
+        verticalLayoutWidget_3->setGeometry(QRect(260, 290, 428, 161));
         verticalLayout_3 = new QVBoxLayout(verticalLayoutWidget_3);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(0, 0, 0, 0);
@@ -138,12 +137,30 @@ public:
 
         horizontalLayout_4->addWidget(pushButton_4);
 
+        pushButton_6 = new QPushButton(verticalLayoutWidget_3);
+        pushButton_6->setObjectName(QString::fromUtf8("pushButton_6"));
+
+        horizontalLayout_4->addWidget(pushButton_6);
+
+        pushButton_7 = new QPushButton(verticalLayoutWidget_3);
+        pushButton_7->setObjectName(QString::fromUtf8("pushButton_7"));
+
+        horizontalLayout_4->addWidget(pushButton_7);
+
+        pushButton_8 = new QPushButton(verticalLayoutWidget_3);
+        pushButton_8->setObjectName(QString::fromUtf8("pushButton_8"));
+
+        horizontalLayout_4->addWidget(pushButton_8);
+
 
         verticalLayout_3->addLayout(horizontalLayout_4);
 
         tableView = new QTableView(centralwidget);
         tableView->setObjectName(QString::fromUtf8("tableView"));
-        tableView->setGeometry(QRect(320, 20, 471, 261));
+        tableView->setGeometry(QRect(180, 20, 661, 171));
+        textBrowser = new QTextBrowser(centralwidget);
+        textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
+        textBrowser->setGeometry(QRect(190, 200, 651, 51));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -166,8 +183,11 @@ public:
         pushButton_3->setText(QApplication::translate("MainWindow", "Search", nullptr));
         label->setText(QApplication::translate("MainWindow", "\320\233\320\276\320\263\320\270\320\275", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\276\320\273\321\214", nullptr));
-        pushButton_5->setText(QApplication::translate("MainWindow", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", nullptr));
-        pushButton_4->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\262\320\265\321\200\320\272\320\260 \320\262\321\205\320\276\320\264\320\260", nullptr));
+        pushButton_5->setText(QApplication::translate("MainWindow", "\320\245\321\215\321\210\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265 ", nullptr));
+        pushButton_4->setText(QApplication::translate("MainWindow", "\320\250\320\270\321\204\321\200\320\276\320\262\320\260\320\275\320\270\320\265", nullptr));
+        pushButton_6->setText(QApplication::translate("MainWindow", "\320\235\320\260\320\271\321\202\320\270 \320\277\320\276 Id", nullptr));
+        pushButton_7->setText(QApplication::translate("MainWindow", "\321\200\320\265\320\263\320\270\321\201\321\202\321\200\320\260\321\206\320\270\321\217", nullptr));
+        pushButton_8->setText(QApplication::translate("MainWindow", "\320\260\320\262\321\202\320\276\321\200\320\270\320\267\320\260\321\206\320\270\321\217", nullptr));
     } // retranslateUi
 
 };

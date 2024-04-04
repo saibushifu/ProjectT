@@ -11,15 +11,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     //создаём сокет
     socket = new QTcpSocket(this);
+    updateTable();
 
-    db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE");
-    db.setDatabaseName("C:/11111qwerty/projectTDb.db");
+}
+
+void MainWindow::updateTable(){
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("C:/Music/projectTDb.db");
 db.open();
-    sqlQuery = new QSqlQuery(db);
-    sqlQuery->exec("SELECT * FROM User;");
 
     tableModel = new QSqlTableModel(this, db);
-    tableModel->setTable("User");
+    tableModel->setTable("user");
     tableModel->select();
 
     ui->tableView->setModel(tableModel);
@@ -88,7 +90,7 @@ void MainWindow::slotReadyRead()
             nextBlockSize = 0;
             //выводим текст на экран
             ui->textBrowser->append(str);
-
+            updateTable();
 
         }
 
@@ -128,7 +130,6 @@ void MainWindow::on_lineEdit_returnPressed()
 
 void MainWindow::on_pushButton_5_clicked()
 {
-
     SendToServer(ui->lineEdit_2->text(),ui->lineEdit_3->text(), 1);
 }
 
@@ -136,5 +137,23 @@ void MainWindow::on_pushButton_5_clicked()
 void MainWindow::on_pushButton_4_clicked()
 {
     SendToServer(ui->lineEdit_2->text(),ui->lineEdit_3->text(), 2);
+}
+
+
+void MainWindow::on_pushButton_6_clicked()
+{
+  SendToServer(ui->lineEdit_2->text(),ui->lineEdit_3->text(), 5);
+}
+
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    SendToServer(ui->lineEdit_2->text(),ui->lineEdit_3->text(), 4);
+}
+
+
+void MainWindow::on_pushButton_8_clicked()
+{
+    SendToServer(ui->lineEdit_2->text(),ui->lineEdit_3->text(), 3);
 }
 
