@@ -33,4 +33,9 @@ bool dataBaseFunctions::FindUser(QString login, QString password)
 {
     auto context = DataContext::getInstance();
     context->send_query((QString("INSERT INTO user (username, passwd) VALUES ('%1', '%2');").arg(login).arg(password)), false);
-}
+ }
+
+ quint32 dataBaseFunctions::GetUserId()
+ {
+
+ }

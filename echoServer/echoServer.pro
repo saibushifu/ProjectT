@@ -15,6 +15,7 @@ SOURCES += \
         server.cpp \
         serverfunctions.cpp \
         sha256.cpp \
+        unittests.cpp \
         vigenere.cpp
 
 # Default rules for deployment.
@@ -28,4 +29,5 @@ HEADERS += \
     server.h \
     serverfunctions.h \
     sha256.h \
+    unittests.h \
     vigenere.h
