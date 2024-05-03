@@ -1,40 +1,41 @@
 #ifndef DATABASE_H
 #define DATABASE_H
-#include <QCoreApplication>
+
 #include <QDebug>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlError>
-#include <QSqlRecord>
-#include <QVariant>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlRecord>
 
-class dataBase;
 
-class dataBaseDestroyer
+class Database
 {
-private:
-    dataBase * p_instance;
-public:
-    ~dataBaseDestroyer();
-    void initialize(dataBase * p){p_instance = p;};
-};
 
-class dataBase {
 private:
-    static dataBase * p_instance;
-    static dataBaseDestroyer destroyer;
-    QSqlDatabase mydb;
+
+    static Database * p_instance;
+    QSqlDatabase m_database;
+
 protected:
-    dataBase() {}
-    dataBase(const dataBase&);
-    dataBase& operator = (dataBase &);
-    friend class dataBaseDestroyer;
+    Database(){}
+    Database(const Database& );
+    Database& operator = (Database&);
+    ~Database();
+
 public:
-    ~dataBase();
-    static dataBase* getInstance();
-    QSqlQuery send_query(QString queryStr);
-    void connect();
+    static Database* getInstance();
+
+    QStringList send_query(QString queryStr, bool is_selection, int columns_amount);
+
+    bool connect();
+
+    bool FindUser(QString, QString);
+
+    int FindUserId(QString, QString);
+
     void disconnect();
+
+
 };
 
 #endif // DATABASE_H

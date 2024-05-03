@@ -1,8 +1,10 @@
 #include "mytcpserver.h"
+#include "functions.h"
+
 #include <QDebug>
 #include <QCoreApplication>
 #include <QString>
-#include "functions.h"
+
 MyTcpServer::~MyTcpServer()
 {
 

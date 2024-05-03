@@ -1,7 +1,25 @@
 #include "functions.h"
+#include "database.h"
+#include "sha256.h"
+#include "vigenere.h"
+#include "graph.h"
+#include "graphtasks.cpp"
+
 #include <QString>
 #include <QDebug>
 #include <QCoreApplication>
+#include <regex>
+#include <QFile>
+#include <QTextStream>
+
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
+#include <ctime>
+
+int cur_task_id = -1;
+int cur_user_id = -1;
+
 
 int t1y = 0;
 int t1n = 0;
@@ -16,52 +34,107 @@ QByteArray parsing (QString data_from_client) {
     data_from_client_list.pop_front();
     if (nameOfFunc == "auth")
         return auth(data_from_client_list.at(0), data_from_client_list.at(1));
+
     if (nameOfFunc == "reg")
         return reg(data_from_client_list.at(0), data_from_client_list.at(1), data_from_client_list.at(2));
+
+    if (nameOfFunc == "taskget")
+        return task_text(data_from_client_list.at(0));
+
     if (nameOfFunc == "task1")
         return task1(data_from_client_list.at(0));
+
     if (nameOfFunc == "task2")
         return task2(data_from_client_list.at(0));
+
     if (nameOfFunc == "task3")
         return task3(data_from_client_list.at(0));
+
     if (nameOfFunc == "stats")
         return stats();
+
     else
         return "error1\r\n";
 }
 
 QByteArray auth (QString log, QString pass) {
-    if (log == "user" and pass == "123")
+    auto sha = new SHA256;
+    auto pass_sha = QString::fromStdString(sha->hashString(pass.toStdString()));
+    bool user_in_db = Database::getInstance()->FindUser(log, pass_sha);
+    cur_user_id = Database::getInstance()->FindUserId(log, pass_sha);
+    if (user_in_db)
         return "auth+";
     else
         return "auth-";
 }
 
+bool email_valid(const QString& mail) {
+    std::string mail_std = mail.toStdString(); //regex_match не работает с QString, поэтому делаем std::string
+    std::regex pattern("[a-zA-Z0-9_]+@[a-z]+\\.[a-z]{2,}");
+    return std::regex_match(mail_std, pattern);
+}
+
 QByteArray reg (QString log, QString pass, QString mail) {
-    if (log == "user" and pass == "123" and mail == "ivan@")
-        return "reg+";
-    else
-        return "reg-";
+    if (email_valid(mail)) { // если почта может существовать
+        auto sha = new SHA256;
+        auto pass_sha = QString::fromStdString(sha->hashString(pass.toStdString()));
+        bool user_in_db = Database::getInstance()->FindUser(log, pass_sha);
+        if (!user_in_db) {
+            QString stats_add = QString("INSERT INTO statistics ('task1_count') VALUES ('0');");
+            QStringList res_stats = Database::getInstance()->send_query(stats_add, false, 1);
+            QString query = QString("INSERT INTO users ('username', 'password', 'mail') VALUES ('%1', '%2', '%3');").arg(log, pass_sha, mail);
+            QStringList res = Database::getInstance()->send_query(query, false, 1);
+            if (res[0] == "!0!" || res_stats[0] == "!0!"){
+                return "Ошибка во время отправки запроса";
+            }
+            else if (res[0] == "!1!" && res_stats[0] == "!1!"){
+                cur_user_id = Database::getInstance()->FindUserId(log, pass_sha);
+                return "reg+";
+            }
+        }
+        else
+            return "reg-";
+        }
+    return "reg-";
+}
+
+
+QByteArray task_text(QString task_id) { // возврат условия задачи
+    QString query = "SELECT MAX(id) FROM '%1';"; // для task1 не возвращает, сервер падает
+    int id = (Database::getInstance()->send_query(query.arg("task"+task_id), true, 1)).at(0).toInt();
+    srand(time(0));
+    int rand_id = (rand() % id) + 1;
+    query = "SELECT text FROM task%1 WHERE id = '%2';";
+    QStringList res = Database::getInstance()->send_query(query.arg(task_id).arg(rand_id), true, 1);
+    cur_task_id = rand_id;
+    return res.at(0).toUtf8();
 }
 
 QByteArray task1 (QString data) { //граф
-    if (data == "52") {
-        t1y++;
-        return "t1&y";
+    QByteArray qb; //в файл graphtasks перенеси все таски от миши, также делай для себя функционал, отображение статистики и тесты
+    qDebug() << cur_task_id;
+    int res = task_answer(cur_task_id);
+    qb.setNum(res);
+    qDebug() << qb << data;
+
+    QString query;
+    if (res == data.toInt()){
+        query = "UPDATE statistics SET task1_right = task1_right + 1 WHERE user_id = '%1';";
+        Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
     }
     else {
-        t1n++;
-        return "t1&n";
-    }
+        query = "UPDATE statistics SET task1_wrong = task1_wrong + 1 WHERE user_id = '%1';";
+        Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
+    };
+
+    return "1";
 }
 
 QByteArray task2 (QString data) { //сред
     if (data == "63.42"){
-        t2y++;
         return "t2&y";
     }
     else {
-        t2n++;
         return "t2&n";
     }
 }
@@ -72,32 +145,62 @@ ROT0, home, ключ-test
 результат-asex
 
 */
+
 QByteArray task3 (QString data) { //виженер
-    if (data == "asex") {
-        t3y++;
-        return "t3&y";
+    QString result;
+    QString query = "SELECT word FROM task3 WHERE id = '%1';";
+    QString word = (Database::getInstance()->send_query(query.arg(cur_task_id), true,1)).at(0);
+    query = "SELECT key FROM task3 WHERE id = '%1';";
+    QString key = (Database::getInstance()->send_query(query.arg(cur_task_id), true, 1)).at(0);
+    query = "SELECT encrypt FROM task3 WHERE id = '%1';";
+    QString encrypt = (Database::getInstance()->send_query(query.arg(cur_task_id), true, 1)).at(0);
+    bool need_encrypt = (encrypt.toInt() == 2);
+    if (need_encrypt) {
+        result = Encrypt(word, key);
+    }
+    else result = Decrypt(word, key);
+
+    if (result.toLower() == data){
+        query = "UPDATE statistics SET task3_right = task3_right + 1 WHERE user_id = '%1';";
+        Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
     }
     else {
-        t3n++;
-        return "t3&n";
-    }
+        query = "UPDATE statistics SET task3_wrong = task3_wrong + 1 WHERE user_id = '%1';";
+        Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
+    };
+    return "1";
+    //return result.toLower().toLatin1();
 }
 
 QByteArray stats () {
-    QByteArray t1a, t2a, t3a;
-    t1a.setNum(t1y+t1n);
-    t2a.setNum(t2y+t2n);
-    t3a.setNum(t3y+t3n);
-    QByteArray Qt1y, Qt1n, Qt2y, Qt2n, Qt3y, Qt3n;
-    Qt1y.setNum(t1y);
-    Qt1n.setNum(t1n);
-    Qt2y.setNum(t2y);
-    Qt2n.setNum(t2n);
-    Qt3y.setNum(t3y);
-    Qt3n.setNum(t3n);
+    QString query = "SELECT * FROM statistics WHERE user_id = '%1';";
+    QStringList q_res;
+    q_res = Database::getInstance()->send_query(query.arg(cur_user_id), true, 7);
+    QString t1y, t1n, t2y, t2n, t3y, t3n;
+    int t1c, t2c,  t3c;
+    QString t1, t2, t3;
+    t1y = q_res.at(1);
+    t1n = q_res.at(2);
+    t1c = t1y.toInt()+t1n.toInt();
 
+    t2y = q_res.at(3);
+    t2n = q_res.at(4);
+    t2c = t2y.toInt()+t2n.toInt();
 
-    return ("t1&"+t1a+"&"+Qt1y+"&"+Qt1n+
-            "$t2&"+t2a+"&"+Qt2y+"&"+Qt2n+
-            "$t3&"+t3a+"&"+Qt3y+"&"+Qt3n);
+    t3y = q_res.at(5);
+    t3n = q_res.at(6);
+    t3c = t3y.toInt()+t3n.toInt();
+
+    t1.setNum(t1c);
+    t2.setNum(t2c);
+    t3.setNum(t3c);
+
+    QString res;
+    res = "t1&"+t1+"&"+t1y+"&"+t1n+"$"+
+          "t2&"+t2+"&"+t2y+"&"+t2n+"$"+
+          "t3&"+t3+"&"+t3y+"&"+t3n;
+    return res.toUtf8();
 }
+
+
+

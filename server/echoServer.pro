@@ -21,8 +21,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     database.cpp \
     functions.cpp \
+    graph.cpp \
+    graphtasks.cpp \
     main.cpp \
-    mytcpserver.cpp
+    mytcpserver.cpp \
+    sha256.cpp \
+    vigenere.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -32,4 +36,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     database.h \
     functions.h \
-    mytcpserver.h
+    graph.h \
+    graphtasks.h \
+    mytcpserver.h \
+    sha256.h \
+    vigenere.h

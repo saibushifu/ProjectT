@@ -1,44 +1,85 @@
-#include "database.h"
+#include <database.h>
+#include <QCoreApplication>
 
-dataBase* dataBase::p_instance = nullptr;
-dataBaseDestroyer dataBase::destroyer;
+Database* Database::p_instance = 0;
 
-dataBaseDestroyer::~dataBaseDestroyer() {
-    delete p_instance;
-}
-
-
-dataBase::~dataBase() {
-    if (mydb.isOpen())
+Database::~Database() {
+    if (m_database.isOpen())
         disconnect();
     if (p_instance)
         delete p_instance;
 }
-
-dataBase* dataBase::getInstance() {
+Database* Database::getInstance() //Используется для получения единого экземпляра базы данных. Все методы к базе данных выполняются через вызов этого мето
+{
     if (!p_instance)
     {
-        p_instance = new dataBase();
-        destroyer.initialize(p_instance);
+        p_instance = new Database();
     }
     return p_instance;
 }
 
-void dataBase::connect() {
-    QSqlDatabase mydb = QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("Test.db");
-
-    if(!mydb.open())
-        qDebug()<<mydb.lastError().text();
-}
-void dataBase::disconnect() {
-    mydb.close();
-}
-
-QSqlQuery dataBase::send_query(QString queryStr) {
-    QSqlQuery myquery;
-    if(myquery.prepare(queryStr)) {
-    myquery.exec();
+bool Database::FindUser(QString login, QString password)
+{
+    QString query = "SELECT CASE WHEN COUNT(*) > 0 THEN 'true' ELSE 'false' END AS user_exists FROM users WHERE username = '%1' AND password = '%2';";
+    auto result = p_instance->send_query(query.arg(login).arg(password), true, 1);
+    if (result[0] == "true") return true;
+    else {
+        return false;
     }
-    return myquery;
+
 }
+
+int Database::FindUserId(QString login, QString password)
+{
+    if (FindUser(login, password)){
+        QString query = "SELECT id FROM users WHERE username = '%1'";
+        QString result = (p_instance->send_query(query.arg(login), true, 1)).at(0);
+        return result.toInt();
+    }
+}
+
+
+QStringList Database::send_query(QString queryStr, bool is_selection, int columns_amount)
+{ //Отправляет запрос и возвращает список значений, возвращенных запросом типа string. Аргумент: SQL запрос в виде строки
+    QSqlQuery query;
+    QStringList list;
+    query.prepare(queryStr);
+    if (!query.exec()){
+        qDebug() << "Invalid query:" << query.lastError().text();
+        list.append("!0!");
+        return list;
+    }
+    if (!is_selection){
+        list.append("!1!");
+        return list;
+    }
+
+    while (query.next())
+        for (int i = 0; i < columns_amount; i++){
+            list.append(query.value(i).toString());
+        }
+    return list;
+}
+
+bool Database::connect()
+{
+    // Устанавливаем соединение с базой данных
+    m_database = QSqlDatabase::addDatabase("QSQLITE");
+    m_database.setDatabaseName("C:/Users/zeka3/Desktop/TIMP/good/timp.db");
+    if (!m_database.open())
+    {
+        qDebug() << "Ошибка соединения с базой данных";
+        return false;
+    }
+
+    return true;
+}
+
+void Database::disconnect()
+{
+    // Отключаемся от базы данных
+    m_database.close();
+}
+
+
+
