@@ -20,13 +20,7 @@
 int cur_task_id = -1;
 int cur_user_id = -1;
 
-
-int t1y = 0;
-int t1n = 0;
-int t2y = 0;
-int t2n = 0;
-int t3y = 0;
-int t3n = 0;
+QStringList answers_t3 = {"world", "hir au hlq hziqezieh"};
 
 QByteArray parsing (QString data_from_client) {
     QStringList data_from_client_list = data_from_client.split(QLatin1Char('&'));
@@ -62,6 +56,12 @@ QByteArray auth (QString log, QString pass) {
     auto pass_sha = QString::fromStdString(sha->hashString(pass.toStdString()));
     bool user_in_db = Database::getInstance()->FindUser(log, pass_sha);
     cur_user_id = Database::getInstance()->FindUserId(log, pass_sha);
+
+//Unittest
+    QString pass_intended = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"; // password 123 (for user & tester)
+    if (pass_sha == pass_intended) qDebug() << "User password unittest completed";
+
+
     if (user_in_db)
         return "auth+";
     else
@@ -112,10 +112,8 @@ QByteArray task_text(QString task_id) { // возврат условия зад�
 
 QByteArray task1 (QString data) { //граф
     QByteArray qb; //в файл graphtasks перенеси все таски от миши, также делай для себя функционал, отображение статистики и тесты
-    qDebug() << cur_task_id;
     int res = task_answer(cur_task_id);
     qb.setNum(res);
-    qDebug() << qb << data;
 
     QString query;
     if (res == data.toInt()){
@@ -126,6 +124,10 @@ QByteArray task1 (QString data) { //граф
         query = "UPDATE statistics SET task1_wrong = task1_wrong + 1 WHERE user_id = '%1';";
         Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
     };
+
+//Unittest
+    if (res == answers_t1.at(cur_task_id-1)) qDebug() << "Graph unittest completed";
+
 
     return "1";
 }
@@ -168,6 +170,11 @@ QByteArray task3 (QString data) { //виженер
         query = "UPDATE statistics SET task3_wrong = task3_wrong + 1 WHERE user_id = '%1';";
         Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
     };
+
+    //Unittest
+    if (result.toLower() == answers_t3.at(cur_task_id-1)) qDebug() << "Vigenere unittest completed";
+
+
     return "1";
     //return result.toLower().toLatin1();
 }
