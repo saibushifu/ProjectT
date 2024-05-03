@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QWidget" name="gridLayoutWidget">
@@ -57,7 +57,7 @@
          <item>
           <widget class="QLabel" name="t1stat_label">
            <property name="text">
-            <string>Шифр Виженера: 0 (0/0)</string>
+            <string>Кратчайший Путь: 0 (0/0)</string>
            </property>
           </widget>
          </item>
@@ -71,7 +71,7 @@
          <item>
           <widget class="QLabel" name="t3stat_label">
            <property name="text">
-            <string>Кратчайший Путь: 0 (0/0)</string>
+            <string>Шифр Виженера: 0 (0/0)</string>
            </property>
           </widget>
          </item>
@@ -87,9 +87,9 @@
        <item row="1" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QPushButton" name="resButton">
+          <widget class="QPushButton" name="task3Button">
            <property name="text">
-            <string>Кратчайший Путь</string>
+            <string>Шифр Виженера</string>
            </property>
           </widget>
          </item>
@@ -107,7 +107,7 @@
          <item>
           <widget class="QPushButton" name="task1Button">
            <property name="text">
-            <string>Шифр Виженера</string>
+            <string>Кратчайший Путь</string>
            </property>
           </widget>
          </item>
@@ -134,27 +134,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QLabel" name="t1_label">
-           <property name="text">
-            <string>Подгружать сюда</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="t1_lineEdit">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="placeholderText">
-            <string>Введите ответ сюда</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="1" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
@@ -173,6 +152,34 @@
          </item>
         </layout>
        </item>
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="t1_label">
+           <property name="text">
+            <string>Для начала работы нажмите на кнопку &quot;Обновить задачу&quot;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="t1_lineEdit">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>Введите ответ сюда</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="t1_getTaskpushButton">
+         <property name="text">
+          <string>Обновить задачу</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QLabel" name="label_t1_top">
@@ -180,12 +187,12 @@
        <rect>
         <x>330</x>
         <y>40</y>
-        <width>121</width>
+        <width>131</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Шифр Виженера</string>
+       <string>Кратчайший Путь</string>
       </property>
      </widget>
     </widget>
@@ -218,7 +225,7 @@
          <item>
           <widget class="QLabel" name="t2_label">
            <property name="text">
-            <string>Подгружать сюда</string>
+            <string>Для начала работы нажмите на кнопку &quot;Обновить задачу&quot;</string>
            </property>
           </widget>
          </item>
@@ -251,6 +258,19 @@
        </item>
       </layout>
      </widget>
+     <widget class="QLabel" name="alert_t2">
+      <property name="geometry">
+       <rect>
+        <x>2</x>
+        <y>520</y>
+        <width>791</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_4">
      <widget class="QWidget" name="gridLayoutWidget_4">
@@ -263,27 +283,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="0" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="t1_label_2">
-           <property name="text">
-            <string>Подгружать сюда</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="t3_lineEdit">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="placeholderText">
-            <string>Введите ответ сюда</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="1" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
@@ -302,6 +301,34 @@
          </item>
         </layout>
        </item>
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="t3_label">
+           <property name="text">
+            <string>Для начала работы нажмите на кнопку &quot;Обновить задачу&quot;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="t3_lineEdit">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>Введите ответ сюда</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="t3_getTaskpushButton">
+         <property name="text">
+          <string>Обновить задачу</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QLabel" name="label_t3_top">
@@ -314,7 +341,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Кратчайший Путь</string>
+       <string>Шифр Виженера</string>
       </property>
      </widget>
     </widget>

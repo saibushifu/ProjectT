@@ -9,13 +9,6 @@
 #include <QTableView>
 #include <QStandardItemModel>
 
-/*
-
-    СТАТИСТИКА:
-    НА ГЛАВНОМ ОКОШКЕ СНИЗУ СДЕЛАТЬ ТАБЛИЧКУ, ГДЕ БУДЕТ СТАТИСТИКА ПО ТОМУ, СКОЛЬКО РАЗ ЧЕЛОВЕК ПРАВИЛЬНО РАСЧИТАЛ,
-    К ПРИМЕРУ, ПУТИ В ГРАФЕ. ИЛИ ПРАВИЛЬНО ПО ШИФРУ ВИЖЕНЕРА ПРЕОБРАЗИЛ СЛОВО
-
-*/
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -25,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     QStackedWidget * stackedWidget = new QStackedWidget;
+    ui->stackedWidget->setCurrentIndex(0);
     //stackedWidget->addWidget(stackedWidget);
 
 }
@@ -48,10 +42,13 @@ void MainWindow::on_task1Button_clicked() {
 }
 
 void MainWindow::on_task2Button_clicked() {
+    // тут пока хз как, это твоё
+    //emit task("taskget&2");
     ui->stackedWidget->setCurrentIndex(2);
 }
 
-void MainWindow::on_resButton_clicked() {
+void MainWindow::on_task3Button_clicked() {
+    emit gettask("taskget&3");
     ui->stackedWidget->setCurrentIndex(3);
 }
 
@@ -75,6 +72,8 @@ void MainWindow::on_t1pushButton_clicked() //task 1
 {
     QString data1 = ui->t1_lineEdit->text();
     emit task("task1&"+data1);
+    QString res = get_task_text("taskget&1");
+    ui->t1_label->setText(res);
 }
 
 void MainWindow::on_t2pushButton_clicked()
@@ -87,6 +86,8 @@ void MainWindow::on_t3pushButton_clicked()
 {
     QString data3 = ui->t3_lineEdit->text();
     emit task("task3&"+data3);
+    QString res_text = get_task_text("taskget&3");
+    ui->t1_label->setText(res_text);
 }
 
 void MainWindow::on_pushButton_3_clicked() //stats
@@ -96,9 +97,22 @@ void MainWindow::on_pushButton_3_clicked() //stats
     QStringList statst2 = stats.at(1).split(QLatin1Char('&'));
     QStringList statst3 = stats.at(2).split(QLatin1Char('&'));
 
-    ui->t1stat_label->setText("Шифр Виженера: "+statst1.at(1)+" ("+statst1.at(2)+"/"+statst1.at(3)+")");
+    ui->t1stat_label->setText("Кратчайший Путь: "+statst1.at(1)+" ("+statst1.at(2)+"/"+statst1.at(3)+")");
     ui->t2stat_label->setText("Метод Деления Пополам: "+statst2.at(1)+" ("+statst2.at(2)+"/"+statst2.at(3)+")");
-    ui->t3stat_label->setText("Кратчайший Путь: "+statst3.at(1)+" ("+statst3.at(2)+"/"+statst3.at(3)+")");
-    qDebug() << statst1 << "\n" << statst2 << "\n" << statst3;
+    ui->t3stat_label->setText("Шифр Виженера: "+statst3.at(1)+" ("+statst3.at(2)+"/"+statst3.at(3)+")");
+}
+
+
+void MainWindow::on_t1_getTaskpushButton_clicked()
+{
+    QString res = get_task_text("taskget&1");
+    ui->t1_label->setText(res);
+}
+
+
+void MainWindow::on_t3_getTaskpushButton_clicked()
+{
+    QString res = get_task_text("taskget&3");
+    ui->t3_label->setText(res);
 }
 

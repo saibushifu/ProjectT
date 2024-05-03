@@ -20,9 +20,9 @@ SingletonClient* SingletonClient::getInstance() {
 
 QString SingletonClient::seng_msg_to_server(QString query) {
     mTcpSocket->write(query.toUtf8());
-//}
+    //}
     mTcpSocket->waitForReadyRead();
-//void SingletonClient::slotServerRead(){
+    //void SingletonClient::slotServerRead(){
     QString msg = "";
     while (mTcpSocket->bytesAvailable()>0) {
         QByteArray array = mTcpSocket->readAll();

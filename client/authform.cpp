@@ -48,12 +48,3 @@ void authform::on_reg_clicked()
 }
 
 
-/*
-void authform::auth(QString login, QString pass)
-{
-    // по хорошему: Client::sendmsgtoServer("auth&"+login+"&"+hash(pass));
-    emit authok("auth+&qwert");
-}
-*/
-
-

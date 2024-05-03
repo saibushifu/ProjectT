@@ -1,6 +1,7 @@
 #include "functionsforclient.h"
 #include "singletonclient.h"
 
+
 #include <QString>
 
 QString auth(QString login, QString pass) {
@@ -11,6 +12,11 @@ QString auth(QString login, QString pass) {
 QString reg(QString login, QString pass, QString mail) {
     QString res = SingletonClient::getInstance()->seng_msg_to_server("reg&"+login+"&"+pass+"&"+mail);
     return res;
+}
+
+QString get_task_text(QString data) {
+    QString res = SingletonClient::getInstance()->seng_msg_to_server(data);
+    return res; // возвращает string условия задачи
 }
 
 QString task1(QString data) {
@@ -39,7 +45,3 @@ QStringList get_stats(){
     return stats;
 }
 
-QString hash (QString pass)
-{
-    return "frwtregr";
-}

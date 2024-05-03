@@ -24,6 +24,7 @@ public:
 signals:
     void on_exit();
     void task(QString);
+    void gettask(QString);
 
 private slots:
     void on_exitButton_clicked();
@@ -32,7 +33,7 @@ private slots:
 
     void on_task2Button_clicked();
 
-    void on_resButton_clicked();
+    void on_task3Button_clicked();
 
     // можно сделать много кнопок, ссыл. на 1 метод?
     void on_returnButton1_clicked();
@@ -46,6 +47,11 @@ private slots:
     void on_t2pushButton_clicked();
 
     void on_t3pushButton_clicked();
+
+    void on_t1_getTaskpushButton_clicked();
+
+
+    void on_t3_getTaskpushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -1,6 +1,7 @@
 #ifndef SINGLETONCLIENT_H
 #define SINGLETONCLIENT_H
 
+
 #include <QObject>
 #include <QTcpSocket>
 #include <QtNetwork>
@@ -28,12 +29,17 @@ private:
     static SingletonClient* p_instance;
     static SingletonDestroyer destroyer;
     QTcpSocket * mTcpSocket;
+    //QTcpSocket * mTcpSocket;
+    //размер передаваемого блока данных
+    quint16 nextBlockSize;
+    void slotReadyRead();
 protected:
     explicit SingletonClient (QObject *parent = nullptr);
     SingletonClient(SingletonClient&) = delete;
     SingletonClient& operator = (SingletonClient&) = delete;
     ~SingletonClient();
     friend class SingletonDestroyer;
+
 public:
     static SingletonClient* getInstance();
 

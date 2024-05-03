@@ -6,6 +6,8 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 class ModelClass : public QObject
 {
@@ -15,10 +17,14 @@ private:
     authform* authf;
     MainWindow* mainf;
 
+
+    QSqlDatabase db;
+    QSqlQuery *sqlQuery;
+
 public:
     ModelClass(QObject * parent=nullptr);
     // получает имя, на выход говорит что запустить (форму) или какой сигнал вызвать
-    void send_msg(QString);
+    void receive_msg(QString);
     void task_msg(QString);
 
 public slots:

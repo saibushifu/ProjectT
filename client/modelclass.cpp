@@ -12,17 +12,18 @@ ModelClass::ModelClass(QObject *parent) : QObject(parent)
     connect(authf, //соединяем authf, сигнал логина, modelclass и обработку сигнала логина
             &authform::log,
             this,
-            &ModelClass::send_msg);
+            &ModelClass::receive_msg);
 
     connect(authf,
             &authform::signup,
             this,
-            &ModelClass::send_msg);
+            &ModelClass::receive_msg);
 
     connect(mainf,
             &MainWindow::task,
             this,
             &ModelClass::slot_on_msgRead);
+
 
 
     //////
@@ -34,13 +35,14 @@ ModelClass::ModelClass(QObject *parent) : QObject(parent)
     //выход из mainwindow в authform
     connect(mainf,
             &MainWindow::on_exit, // сигнал
-           this, // сюда
+            this, // сюда
             &ModelClass::slot_on_exit); // слот
+
 
 }
 
 
-void ModelClass::send_msg(QString msg) //msg = "auth-", "auth+&log", "reg+", "reg-"
+void ModelClass::receive_msg(QString msg) //msg = "auth-", "auth+&log", "reg+", "reg-"
 {
 
     if (msg == "auth-" || msg == "reg-")
@@ -52,6 +54,7 @@ void ModelClass::send_msg(QString msg) //msg = "auth-", "auth+&log", "reg+", "re
 
 void ModelClass::slot_on_msgRead(QString msg)
 {
+    qDebug() << msg;
     if(msg.mid(0, 4) == "reg+" || msg.mid(0, 5) == "auth+") {
         this->authf->close();
         this->mainf->show();
@@ -70,14 +73,10 @@ void ModelClass::slot_on_msgRead(QString msg)
     }
 
     else qDebug() << "Что-то пошло не так (ModelClass::slot_on_msgRead)";
+
 }
 
 void ModelClass::slot_on_exit() {
     authf->show();
     mainf->close();
 }
-
-
-
-
-

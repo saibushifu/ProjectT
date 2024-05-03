@@ -15,6 +15,7 @@ class Singleton
 	private:
 		static Singleton * p_instance;
 		static SingletonDestroyer destroyer;
+
 	protected:
 		Singleton(){}
 		Singleton(const Singleton& );
