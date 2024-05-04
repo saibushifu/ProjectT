@@ -2,8 +2,9 @@
 #include "database.h"
 #include "sha256.h"
 #include "vigenere.h"
-#include "graph.h"
 #include "graphtasks.cpp"
+#include "middletasks.h"
+
 
 #include <QString>
 #include <QDebug>
@@ -13,13 +14,13 @@
 #include <QTextStream>
 
 #include <cstdlib>
-#include <cstring>
-#include <fstream>
 #include <ctime>
 
 int cur_task_id = -1;
 int cur_user_id = -1;
 
+
+vector<double> answers_t2 = {1.96875, 2.625, 4.875};
 QStringList answers_t3 = {"world", "hir au hlq hziqezieh"};
 
 QByteArray parsing (QString data_from_client) {
@@ -133,12 +134,23 @@ QByteArray task1 (QString data) { //граф
 }
 
 QByteArray task2 (QString data) { //сред
-    if (data == "63.42"){
-        return "t2&y";
+    double res = task2_answer(cur_task_id);
+    qDebug() << res;
+    QString query;
+    if (res == data.toDouble()) {
+        query = "UPDATE statistics SET task2_right = task2_right + 1 WHERE user_id = '%1';";
+        Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
     }
     else {
-        return "t2&n";
-    }
+        query = "UPDATE statistics SET task2_wrong = task2_wrong + 1 WHERE user_id = '%1';";
+        Database::getInstance()->send_query(query.arg(cur_user_id), false, 1);
+    };
+
+    //Unittest
+    if (res == answers_t2.at(cur_task_id-1)) qDebug() << "Bisection unittest completed";
+
+
+    return "1";
 }
 
 /*
@@ -150,12 +162,18 @@ ROT0, home, ключ-test
 
 QByteArray task3 (QString data) { //виженер
     QString result;
+    QStringList q_res;
+    QString query = "SELECT word, key, encrypt FROM task3 WHERE id = '%1';";
+    q_res = Database::getInstance()->send_query(query.arg(cur_task_id), true, 3);
+    QString word = q_res.at(0), key = q_res.at(1), encrypt = q_res.at(2);
+    /*
     QString query = "SELECT word FROM task3 WHERE id = '%1';";
     QString word = (Database::getInstance()->send_query(query.arg(cur_task_id), true,1)).at(0);
     query = "SELECT key FROM task3 WHERE id = '%1';";
     QString key = (Database::getInstance()->send_query(query.arg(cur_task_id), true, 1)).at(0);
     query = "SELECT encrypt FROM task3 WHERE id = '%1';";
     QString encrypt = (Database::getInstance()->send_query(query.arg(cur_task_id), true, 1)).at(0);
+*/
     bool need_encrypt = (encrypt.toInt() == 2);
     if (need_encrypt) {
         result = Encrypt(word, key);

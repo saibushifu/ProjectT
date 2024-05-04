@@ -8,7 +8,7 @@
 
 using namespace std;
 
-vector<int> answers_t1 = {12, 2, 17}; //answer_1 = 12, answer_2 = 2, answer_3 = 17;
+vector<int> answers_t1 = {12, 2, 17};
 
 int task_answer(int cur_task_id) {
     int points_amount = 6;

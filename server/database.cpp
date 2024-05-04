@@ -1,4 +1,5 @@
-#include <database.h>
+#include "database.h"
+
 #include <QCoreApplication>
 
 Database* Database::p_instance = 0;

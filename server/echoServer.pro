@@ -24,6 +24,8 @@ SOURCES += \
     graph.cpp \
     graphtasks.cpp \
     main.cpp \
+    middle.cpp \
+    middletasks.cpp \
     mytcpserver.cpp \
     sha256.cpp \
     vigenere.cpp
@@ -38,6 +40,8 @@ HEADERS += \
     functions.h \
     graph.h \
     graphtasks.h \
+    middle.h \
+    middletasks.h \
     mytcpserver.h \
     sha256.h \
     vigenere.h
