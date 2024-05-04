@@ -80,6 +80,8 @@ void MainWindow::on_t2pushButton_clicked()
 {
     QString data2 = ui->t2_lineEdit->text();
     emit task("task2&"+data2);
+    QString res = get_task_text("taskget&2");
+    ui->t2_label->setText(res);
 }
 
 void MainWindow::on_t3pushButton_clicked()
@@ -110,9 +112,17 @@ void MainWindow::on_t1_getTaskpushButton_clicked()
 }
 
 
+void MainWindow::on_t2_getTaskpushButton_clicked()
+{
+    QString res = get_task_text("taskget&2");
+    ui->t2_label->setText(res);
+}
+
 void MainWindow::on_t3_getTaskpushButton_clicked()
 {
     QString res = get_task_text("taskget&3");
     ui->t3_label->setText(res);
 }
+
+
 

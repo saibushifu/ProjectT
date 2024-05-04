@@ -53,6 +53,8 @@ private slots:
 
     void on_t3_getTaskpushButton_clicked();
 
+    void on_t2_getTaskpushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     authform * authf;

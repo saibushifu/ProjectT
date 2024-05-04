@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QWidget" name="gridLayoutWidget">
@@ -220,24 +220,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QLabel" name="t2_label">
-           <property name="text">
-            <string>Для начала работы нажмите на кнопку &quot;Обновить задачу&quot;</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="t2_lineEdit">
-           <property name="placeholderText">
-            <string>Введите ответ сюда</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="1" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
@@ -256,6 +238,31 @@
          </item>
         </layout>
        </item>
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="t2_label">
+           <property name="text">
+            <string>Для начала работы нажмите на кнопку &quot;Обновить задачу&quot;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="t2_lineEdit">
+           <property name="placeholderText">
+            <string>Введите ответ сюда</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="t2_getTaskpushButton">
+         <property name="text">
+          <string>Обновить задачу</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QLabel" name="alert_t2">
@@ -269,6 +276,19 @@
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>10</y>
+        <width>491</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Ответ к каждому заданию является значение на 5-й итерации метода</string>
       </property>
      </widget>
     </widget>
