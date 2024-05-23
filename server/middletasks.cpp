@@ -9,17 +9,17 @@ using namespace std;
 
 vector<double> points = { 1, 2, 0, 4, 2, 6 };
 
-double F1(double x) {
+double F1(double x) { //1 функция, возвращает число double
     return x*x - 9*x + 14;
 }
-double F2(double x) {
+double F2(double x) { //2 функция, возвращает число double
     return x*x*x + x - 21;
 }
-double F3(double x) {
+double F3(double x) { //3 функция, возвращает число double
     return x - sqrt(3*x) - 1;
 }
 
-double task2_answer(int cur_task_id) {
+double task2_answer(int cur_task_id) { // хранилище заданий на метод сечения пополам
     double a, b, eps = 0.01, x;
     if (cur_task_id == 1) {
         a = points.at(0);

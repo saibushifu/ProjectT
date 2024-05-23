@@ -1,6 +1,6 @@
 #include "vigenere.h"
 
-QString Encrypt(QString Input, QString Key){
+QString Encrypt(QString Input, QString Key){ // функция шифрования строки шифром виженера, возвращает QString
     Input = Input.toUpper();
     Key = Key.toUpper();
     QString Output;
@@ -44,7 +44,7 @@ QString Encrypt(QString Input, QString Key){
 
 
 
-QString Decrypt(QString Input, QString Key){
+QString Decrypt(QString Input, QString Key){ // функция дешифрования строки шифром виженера, возвращает QString
     Input = Input.toUpper();
     Key = Key.toUpper();
     QString Output;

@@ -10,7 +10,7 @@ using namespace std;
 
 vector<int> answers_t1 = {12, 2, 17};
 
-int task_answer(int cur_task_id) {
+int task_answer(int cur_task_id) { // хранилище заданий на графы
     int points_amount = 6;
     if (cur_task_id == 1) {
         int start = 0;

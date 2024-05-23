@@ -19,7 +19,7 @@ Database* Database::getInstance() //Используется для получе
     return p_instance;
 }
 
-bool Database::FindUser(QString login, QString password)
+bool Database::FindUser(QString login, QString password) //нахождение пользователя в БД, возвращает true/false
 {
     QString query = "SELECT CASE WHEN COUNT(*) > 0 THEN 'true' ELSE 'false' END AS user_exists FROM users WHERE username = '%1' AND password = '%2';";
     auto result = p_instance->send_query(query.arg(login).arg(password), true, 1);
@@ -30,7 +30,7 @@ bool Database::FindUser(QString login, QString password)
 
 }
 
-int Database::FindUserId(QString login, QString password)
+int Database::FindUserId(QString login, QString password) //нахождение id пользователя, возвращает число
 {
     if (FindUser(login, password)){
         QString query = "SELECT id FROM users WHERE username = '%1'";
@@ -62,7 +62,7 @@ QStringList Database::send_query(QString queryStr, bool is_selection, int column
     return list;
 }
 
-bool Database::connect()
+bool Database::connect() //соединение с БД
 {
     // Устанавливаем соединение с базой данных
     m_database = QSqlDatabase::addDatabase("QSQLITE");
@@ -76,7 +76,7 @@ bool Database::connect()
     return true;
 }
 
-void Database::disconnect()
+void Database::disconnect() //отключение от БД
 {
     // Отключаемся от базы данных
     m_database.close();

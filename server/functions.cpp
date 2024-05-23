@@ -23,7 +23,7 @@ int cur_user_id = -1;
 vector<double> answers_t2 = {1.96875, 2.625, 4.875};
 QStringList answers_t3 = {"world", "hir au hlq hziqezieh"};
 
-QByteArray parsing (QString data_from_client) {
+QByteArray parsing (QString data_from_client) { //обработка информации с клиента, в зависимости от "имени функции" меняются вызываемые функции обработки с выводом в консоль
     QStringList data_from_client_list = data_from_client.split(QLatin1Char('&'));
     QString nameOfFunc = data_from_client_list.front();
     data_from_client_list.pop_front();
@@ -52,7 +52,7 @@ QByteArray parsing (QString data_from_client) {
         return "error1\r\n";
 }
 
-QByteArray auth (QString log, QString pass) {
+QByteArray auth (QString log, QString pass) { //функция входа в аккаунт, возвращает в консоль результат входа
     auto sha = new SHA256;
     auto pass_sha = QString::fromStdString(sha->hashString(pass.toStdString()));
     bool user_in_db = Database::getInstance()->FindUser(log, pass_sha);
@@ -69,13 +69,13 @@ QByteArray auth (QString log, QString pass) {
         return "auth-";
 }
 
-bool email_valid(const QString& mail) {
+bool email_valid(const QString& mail) { //проверка валидности почты, возвращает true/false
     std::string mail_std = mail.toStdString(); //regex_match не работает с QString, поэтому делаем std::string
     std::regex pattern("[a-zA-Z0-9_]+@[a-z]+\\.[a-z]{2,}");
     return std::regex_match(mail_std, pattern);
 }
 
-QByteArray reg (QString log, QString pass, QString mail) {
+QByteArray reg (QString log, QString pass, QString mail) { //функция регистрации, возвращает в консоль результат регистрации
     if (email_valid(mail)) { // если почта может существовать
         auto sha = new SHA256;
         auto pass_sha = QString::fromStdString(sha->hashString(pass.toStdString()));
@@ -100,7 +100,7 @@ QByteArray reg (QString log, QString pass, QString mail) {
 }
 
 
-QByteArray task_text(QString task_id) { // возврат условия задачи
+QByteArray task_text(QString task_id) { // возврат случайного условия задачи из БД
     QString query = "SELECT MAX(id) FROM '%1';"; // для task1 не возвращает, сервер падает
     int id = (Database::getInstance()->send_query(query.arg("task"+task_id), true, 1)).at(0).toInt();
     srand(time(0));
@@ -111,7 +111,7 @@ QByteArray task_text(QString task_id) { // возврат условия зад�
     return res.at(0).toUtf8();
 }
 
-QByteArray task1 (QString data) { //граф
+QByteArray task1 (QString data) { //функция обработки данных для задачи на граф, возвращает результат в консоль
     QByteArray qb; //в файл graphtasks перенеси все таски от миши, также делай для себя функционал, отображение статистики и тесты
     int res = task_answer(cur_task_id);
     qb.setNum(res);
@@ -133,7 +133,7 @@ QByteArray task1 (QString data) { //граф
     return "1";
 }
 
-QByteArray task2 (QString data) { //сред
+QByteArray task2 (QString data) { //функция обработки данных для задачи на метод деления пополам, возвращает результат в консоль
     double res = task2_answer(cur_task_id);
     qDebug() << res;
     QString query;
@@ -153,27 +153,13 @@ QByteArray task2 (QString data) { //сред
     return "1";
 }
 
-/*
-
-ROT0, home, ключ-test
-результат-asex
-
-*/
-
-QByteArray task3 (QString data) { //виженер
+QByteArray task3 (QString data) { //функция обработки данных для задачи на шифр виженера, возвращает результат в консоль
     QString result;
     QStringList q_res;
     QString query = "SELECT word, key, encrypt FROM task3 WHERE id = '%1';";
     q_res = Database::getInstance()->send_query(query.arg(cur_task_id), true, 3);
     QString word = q_res.at(0), key = q_res.at(1), encrypt = q_res.at(2);
-    /*
-    QString query = "SELECT word FROM task3 WHERE id = '%1';";
-    QString word = (Database::getInstance()->send_query(query.arg(cur_task_id), true,1)).at(0);
-    query = "SELECT key FROM task3 WHERE id = '%1';";
-    QString key = (Database::getInstance()->send_query(query.arg(cur_task_id), true, 1)).at(0);
-    query = "SELECT encrypt FROM task3 WHERE id = '%1';";
-    QString encrypt = (Database::getInstance()->send_query(query.arg(cur_task_id), true, 1)).at(0);
-*/
+
     bool need_encrypt = (encrypt.toInt() == 2);
     if (need_encrypt) {
         result = Encrypt(word, key);
@@ -197,7 +183,7 @@ QByteArray task3 (QString data) { //виженер
     //return result.toLower().toLatin1();
 }
 
-QByteArray stats () {
+QByteArray stats () { // метод получения статистики, вывод её в консоль
     QString query = "SELECT * FROM statistics WHERE user_id = '%1';";
     QStringList q_res;
     q_res = Database::getInstance()->send_query(query.arg(cur_user_id), true, 7);

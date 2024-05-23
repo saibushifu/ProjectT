@@ -15,16 +15,3 @@ double FindRoot(double (*f)(double),double a,double b,double eps){
     }
     return c;
 }
-
-/*
-    //Интервал, погрешность и корень:
-    double a,b,eps,x;
-
-    //Проверка корректности интервала:
-    if(F(a)*F(b)>0){
-        cout << "Wrong interval!\n";
-        return 0;}
-
-    //Поиск решения:
-    x=FindRoot(F,a,b,eps);
-*/

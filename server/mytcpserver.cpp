@@ -5,7 +5,7 @@
 #include <QCoreApplication>
 #include <QString>
 
-MyTcpServer::~MyTcpServer()
+MyTcpServer::~MyTcpServer() //деструктор
 {
 
     mTcpServer->close();
@@ -26,7 +26,7 @@ MyTcpServer::MyTcpServer(QObject *parent) : QObject(parent){
     }
 }
 
-void MyTcpServer::slotNewConnection() {
+void MyTcpServer::slotNewConnection() { // создание нового подключения к серверу
     while (mTcpServer->hasPendingConnections()) {
         QTcpSocket *clientSocket = mTcpServer->nextPendingConnection();
         int descriptor = clientSocket->socketDescriptor();
@@ -36,7 +36,7 @@ void MyTcpServer::slotNewConnection() {
     }
 }
 
-void MyTcpServer::slotServerRead() {
+void MyTcpServer::slotServerRead() { //чтение данных
     QTcpSocket *clientSocket = qobject_cast<QTcpSocket*>(sender());
     if (!clientSocket) return;
 
@@ -62,7 +62,7 @@ void MyTcpServer::slotServerRead() {
         clientSocket->write(parsing(res)); // Обработка и отправка ответа
     }
 }
-void MyTcpServer::slotClientDisconnected() {
+void MyTcpServer::slotClientDisconnected() { //клиент отключился
     QTcpSocket *clientSocket = qobject_cast<QTcpSocket*>(sender());
     int descriptor = clientSocket->socketDescriptor();
     mClientSockets.erase(descriptor);
