@@ -1,6 +1,6 @@
 #include "singletonclient.h"
 
-SingletonClient::SingletonClient(QObject *parent) : QObject(parent)
+SingletonClient::SingletonClient(QObject *parent) : QObject(parent) //создание подключения
 {
     mTcpSocket = new QTcpSocket(this);
     mTcpSocket->connectToHost("127.0.0.1", 33333);
@@ -10,7 +10,7 @@ SingletonClient::SingletonClient(QObject *parent) : QObject(parent)
 
 }
 
-SingletonClient* SingletonClient::getInstance() {
+SingletonClient* SingletonClient::getInstance() { //получение указателя на подключение, иначе создание такового
     if (!p_instance){
         p_instance = new SingletonClient();
         destroyer.initialize(p_instance);
@@ -18,7 +18,7 @@ SingletonClient* SingletonClient::getInstance() {
     return p_instance;
 }
 
-QString SingletonClient::seng_msg_to_server(QString query) {
+QString SingletonClient::seng_msg_to_server(QString query) { //отправка сообщения на сервер
     mTcpSocket->write(query.toUtf8());
     //}
     mTcpSocket->waitForReadyRead();

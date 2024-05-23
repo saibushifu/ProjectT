@@ -42,7 +42,7 @@ ModelClass::ModelClass(QObject *parent) : QObject(parent)
 }
 
 
-void ModelClass::receive_msg(QString msg) //msg = "auth-", "auth+&log", "reg+", "reg-"
+void ModelClass::receive_msg(QString msg) //обработка сообщения от сервера, если ответ является отказом во входе/регистрации, то в консоль пишем ошибку, иначе передаём данные в следующий обработчик
 {
 
     if (msg == "auth-" || msg == "reg-")
@@ -52,7 +52,7 @@ void ModelClass::receive_msg(QString msg) //msg = "auth-", "auth+&log", "reg+", 
 }
 
 
-void ModelClass::slot_on_msgRead(QString msg)
+void ModelClass::slot_on_msgRead(QString msg) //обрабатываем либо успешное сообщение входа/регистрации, либо запрос на проверку ответа на задание
 {
     qDebug() << msg;
     if(msg.mid(0, 4) == "reg+" || msg.mid(0, 5) == "auth+") {
@@ -76,7 +76,7 @@ void ModelClass::slot_on_msgRead(QString msg)
 
 }
 
-void ModelClass::slot_on_exit() {
+void ModelClass::slot_on_exit() { //при нажатии на кнопку выхода в главном окне вызывается эта функция, закрывает главное окно и показывает окно входа в аккаунт
     authf->show();
     mainf->close();
 }

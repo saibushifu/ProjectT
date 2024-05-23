@@ -19,7 +19,7 @@ authform::~authform()
 }
 
 
-void authform::on_change_clicked()
+void authform::on_change_clicked() //функция смены режима аутентификации, меняет кнопки и поля на экране (меняются режимы "вход" и "регистрация")
 {
     bool isregflag = ui->email->isVisible();
     ui->emailLabel->setVisible(!isregflag);
@@ -29,16 +29,15 @@ void authform::on_change_clicked()
 }
 
 
-void authform::on_auth_clicked()
+void authform::on_auth_clicked() //метод, вызываемый нажатием на кнопку входа, даёт серверу данные на проверку, передаёт ответ от сервера на обработку клиенту через emit
 {
     QString login = ui->login->text();
     QString pass = ui->password->text();
     QString res = auth(login, pass);
     emit log(res);
-    //ModelClass::send_msg(res); //что не так???
 }
 
-void authform::on_reg_clicked()
+void authform::on_reg_clicked()//метод, вызываемый нажатием на кнопку регистрации, даёт серверу данные на проверку, передаёт ответ от сервера на обработку клиенту через emit
 {
     QString login = ui->login->text();
     QString pass = ui->password->text();
